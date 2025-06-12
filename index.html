@@ -9,314 +9,223 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Style block from the reference 'OFA' document -->
     <style>
         body {
             font-family: 'Barlow Condensed', sans-serif;
-            background-color: #F0F4F8; /* Light gray background for contrast */
+            background-color: #f0f4f8;
+            font-weight: 400; /* Regular */
         }
-        .text-red-main { color: #9B1915; }
-        .text-black-main { color: #000000; }
-        .text-white-main { color: #FFFFFF; }
-        .bg-red-main { background-color: #9B1915; }
-        .bg-black-main { background-color: #000000; }
-        .bg-yellow-expressive { background-color: #FFB332; }
-        .bg-aqua-expressive { background-color: #63C4D8; }
-        .bg-turquoise-expressive { background-color: #65B994; }
-        .border-black-main { border-color: #000000; }
-        .border-red-main { border-color: #9B1915; }
-        .border-turquoise-expressive { border-color: #65B994; }
-
-        h1, h2 {
-            font-weight: 700; /* Titles_headings: Bold */
+        h1, h2, h3, h4, strong {
+            font-weight: 700; /* Bold */
         }
-        h3 {
-            font-weight: 400; /* Subheadings: Regular */
-        }
-        strong {
-            font-weight: 700; /* Body_title_headings: Bold */
-        }
-        p, li, td, th {
-            font-weight: 400; /* Body_text: Regular */
-        }
-
-        .chart-container {
+        .doughnut-chart-container {
             position: relative;
             width: 100%;
             max-width: 500px;
-            height: 280px;
             margin-left: auto;
             margin-right: auto;
+            height: 320px;
         }
         @media (min-width: 768px) {
-            .chart-container {
+            .doughnut-chart-container {
                 height: 350px;
             }
         }
-        .flow-arrow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 80px;
-            width: 100%;
-            font-size: 2.5rem;
-            color: #000000; /* Lines/Arrows: Black */
-        }
-        .flow-box {
-            border: 2px solid #000000; /* Lines/Arrows: Black */
-            background-color: #FFFFFF;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-        .kpi-card {
-            background-color: #FFFFFF;
+        .material-card {
+            background-color: white;
             border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             padding: 1.5rem;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%; /* Make cards in a grid have same height */
         }
-        .kpi-card:hover {
+        .material-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
         }
     </style>
 </head>
-<body class="text-black-main">
+<body class="text-black">
 
-    <header class="bg-red-main text-white-main text-center py-12 px-4">
-        <h1 class="text-4xl md:text-5xl tracking-tight">On-Time-In-Full (OTIF) Ordering</h1>
-        <p class="text-xl md:text-2xl mt-2">A Deep Dive into OTIF Ordering Performance</p>
-    </header>
-
-    <main class="container mx-auto p-4 md:p-8">
-
-        <section id="introduction" class="mb-16">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl text-black-main mb-4">What is On-Time-In-Full Ordering?</h2>
-                <p class="text-lg text-black-main mb-8">
-                    On-Time-In-Full (OTIF) Ordering is a critical performance indicator that measures the percentage of purchase order lines processed perfectly. It tells us how effectively we translate planned inventory needs into supplier orders, focusing on <span class="bg-red-main text-white-main px-2 rounded">two simple but essential questions: was the order placed promptly, and was it for the exact quantity required?</span>
-                </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div class="kpi-card">
-                    <div class="text-6xl text-center text-red-main mb-4">⏰</div>
-                    <h3 class="text-2xl text-center mb-2 text-black-main">On-Time</h3>
-                    <p class="text-center text-black-main">
-                        An order line is considered <strong class="bg-red-main text-white-main px-1 rounded">"On-Time"</strong> if it's reviewed and sent to the supplier within <strong>24 hours</strong> of being released by the inventory planning system.
-                    </p>
-                </div>
-                <div class="kpi-card">
-                    <div class="text-6xl text-center text-yellow-expressive mb-4">📦</div>
-                    <h3 class="text-2xl text-center mb-2 text-black-main">In-Full</h3>
-                    <p class="text-center text-black-main">
-                        An order line is <strong class="bg-red-main text-white-main px-1 rounded">"In-Full"</strong> if the quantity ordered from the supplier is <strong>exactly equal</strong> to the quantity released from the planning system. No more, no less.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="process-flow" class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-10">
-            <h2 class="text-3xl text-black-main mb-8 text-center">The OTIF Evaluation Process</h2>
-             <p class="text-lg text-black-main mb-10 text-center max-w-3xl mx-auto">For an order line to achieve a 100% OTIF score, it must successfully pass two critical checks. Any failure along this path results in a 0% score for that specific line. This flow illustrates the all-or-nothing nature of the metric.</p>
-            <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-4">
-                <div class="flow-box">
-                    <h4 class="text-black-main text-lg">Start</h4>
-                    <p class="text-black-main">Order Released from Planning System</p>
-                </div>
-                <div class="flow-arrow">➔</div>
-                <div class="flow-box">
-                    <h4 class="text-black-main text-lg">Check 1: On-Time?</h4>
-                    <p class="text-black-main">Processed in under 24 hours?</p>
-                </div>
-                <div class="flow-arrow">➔</div>
-                <div class="flow-box">
-                    <h4 class="text-black-main text-lg">Check 2: In-Full?</h4>
-                    <p class="text-black-main">Quantity ordered = Quantity released?</p>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-3xl mx-auto">
-                <div class="p-6 rounded-lg text-center bg-turquoise-expressive border-2 border-turquoise-expressive">
-                     <h4 class="text-black-main text-xl">PASS ✅</h4>
-                     <p class="text-black-main">If both checks pass, the line scores <strong class="text-red-main">100% OTIF</strong>.</p>
-                </div>
-                 <div class="p-6 rounded-lg text-center bg-red-main border-2 border-red-main">
-                     <h4 class="text-white-main text-xl">FAIL ❌</h4>
-                     <p class="text-white-main">If either check fails, the line scores <strong class="text-yellow-expressive">0% OTIF</strong>.</p>
-                </div>
-            </div>
-        </section>
+    <div class="container mx-auto p-4 md:p-8">
         
-        <section id="performance" class="mb-16">
-            <h2 class="text-3xl text-black-main mb-4 text-center">Performance in Practice</h2>
-            <p class="text-lg text-black-main mb-10 text-center max-w-3xl mx-auto">An overall OTIF score is the average of all individual order lines. Let's look at a typical scenario with four order lines to see how a <span class="bg-red-main text-white-main px-2 rounded">single failure significantly impacts the total score.</span></p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="kpi-card">
-                     <h3 class="text-2xl text-center mb-4 text-black-main">Overall OTIF Score</h3>
-                    <div class="chart-container">
-                        <canvas id="otifDonutChart"></canvas>
+        <!-- Header styled like the reference document -->
+        <header class="text-center mb-12 p-8 md:p-12 rounded-lg" style="background-color: #9B1915;">
+            <h1 class="text-4xl md:text-5xl font-bold text-white tracking-tight uppercase">On-Time-In-Full (OTIF) Ordering</h1>
+            <p class="text-lg text-gray-200 mt-2 max-w-3xl mx-auto font-normal">A Deep Dive into OTIF Ordering Performance</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            <!-- Introduction Section -->
+            <section class="material-card md:col-span-2 lg:col-span-4">
+                 <h2 class="text-3xl font-bold text-black mb-4 text-center uppercase">What is On-Time-In-Full Ordering?</h2>
+                 <p class="text-center text-gray-700 mb-8 max-w-4xl mx-auto font-normal">
+                    On-Time-In-Full (OTIF) Ordering is a critical performance indicator that measures the percentage of purchase order lines processed perfectly. It tells us how effectively we translate planned inventory needs into supplier orders, focusing on <span class="bg-[#9B1915] text-white px-2 rounded font-bold">two simple but essential questions: was the order placed promptly, and was it for the exact quantity required?</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-gray-100 p-6 rounded-lg text-center">
+                        <div class="text-6xl text-center text-[#9B1915] mb-4">⏰</div>
+                        <h3 class="text-2xl mb-2 text-black font-bold">On-Time</h3>
+                        <p class="text-center text-gray-800 font-normal">
+                            An order line is considered <strong class="bg-[#9B1915] text-white px-1 rounded">"On-Time"</strong> if it's reviewed and sent to the supplier within <strong>24 hours</strong> of being released by the inventory planning system.
+                        </p>
                     </div>
-                     <p class="text-center text-black-main mt-4">Only one out of four order lines was perfect, resulting in a 25% overall score. This highlights how every single order line counts.</p>
+                    <div class="bg-gray-100 p-6 rounded-lg text-center">
+                        <div class="text-6xl text-center text-[#FFB332] mb-4">📦</div>
+                        <h3 class="text-2xl text-center mb-2 text-black font-bold">In-Full</h3>
+                        <p class="text-center text-gray-800 font-normal">
+                            An order line is <strong class="bg-[#9B1915] text-white px-1 rounded">"In-Full"</strong> if the quantity ordered from the supplier is <strong>exactly equal</strong> to the quantity released from the planning system. No more, no less.
+                        </p>
+                    </div>
                 </div>
-                <div class="kpi-card">
-                    <h3 class="text-2xl text-center mb-4 text-black-main">Order Line Breakdown</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-black-main">
-                            <thead class="bg-black-main text-white-main">
+            </section>
+
+            <!-- Process Flow Section -->
+            <section class="material-card md:col-span-2 lg:col-span-4">
+                <h2 class="text-3xl font-bold text-black mb-4 text-center uppercase">The OTIF Evaluation Process</h2>
+                <p class="text-center text-gray-700 mb-8 max-w-4xl mx-auto font-normal">For an order line to achieve a 100% OTIF score, it must successfully pass two critical checks. Any failure along this path results in a 0% score for that specific line. This flow illustrates the all-or-nothing nature of the metric.</p>
+                 <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                    <div class="border-2 border-black bg-white p-6 rounded-lg shadow-md w-full md:w-1/4">
+                        <h4 class="font-bold text-lg">Start</h4>
+                        <p class="font-normal text-gray-700">Order Released from Planning System</p>
+                    </div>
+                    <div class="font-bold text-4xl text-gray-400 transform md:rotate-0 rotate-90">➔</div>
+                    <div class="border-2 border-black bg-white p-6 rounded-lg shadow-md w-full md:w-1/4">
+                        <h4 class="font-bold text-lg">Check 1: On-Time?</h4>
+                        <p class="font-normal text-gray-700">Processed in under 24 hours?</p>
+                    </div>
+                    <div class="font-bold text-4xl text-gray-400 transform md:rotate-0 rotate-90">➔</div>
+                    <div class="border-2 border-black bg-white p-6 rounded-lg shadow-md w-full md:w-1/4">
+                        <h4 class="font-bold text-lg">Check 2: In-Full?</h4>
+                        <p class="font-normal text-gray-700">Quantity ordered = Quantity released?</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-3xl mx-auto">
+                    <div class="p-6 rounded-lg text-center bg-[#65B994]">
+                         <h4 class="text-black font-bold text-xl">PASS ✅</h4>
+                         <p class="text-black font-normal">If both checks pass, the line scores <strong class="text-[#9B1915]">100% OTIF</strong>.</p>
+                    </div>
+                     <div class="p-6 rounded-lg text-center bg-[#9B1915]">
+                         <h4 class="text-white font-bold text-xl">FAIL ❌</h4>
+                         <p class="text-white font-normal">If either check fails, the line scores <strong class="text-[#FFB332]">0% OTIF</strong>.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Performance Section -->
+            <section class="material-card md:col-span-2 lg:col-span-4">
+                 <h2 class="text-3xl font-bold text-black mb-4 text-center uppercase">Performance in Practice</h2>
+                 <p class="text-center text-gray-700 mb-8 max-w-4xl mx-auto font-normal">An overall OTIF score is the average of all individual order lines. Let's look at a typical scenario with four order lines to see how a <span class="bg-[#9B1915] text-white px-2 rounded font-bold">single failure significantly impacts the total score.</span></p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold text-black uppercase mb-4">Overall OTIF Score</h3>
+                        <div class="doughnut-chart-container">
+                            <canvas id="otifDonutChart"></canvas>
+                        </div>
+                         <p class="text-center text-gray-700 mt-4 font-normal">Only one out of four order lines was perfect, resulting in a 25% overall score. This highlights how every single order line counts.</p>
+                    </div>
+                    <div class="bg-gray-100 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-black uppercase text-center mb-4">Order Line Breakdown</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left whitespace-nowrap">
+                                <thead class="bg-gray-800 text-white uppercase">
+                                    <tr>
+                                        <th scope="col" class="px-4 py-3">Line</th>
+                                        <th scope="col" class="px-4 py-3">On-Time?</th>
+                                        <th scope="col" class="px-4 py-3">In-Full?</th>
+                                        <th scope="col" class="px-4 py-3">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="font-normal text-center bg-white">
+                                    <tr class="border-b"> <th scope="row" class="px-4 py-3 text-left">1</th> <td class="px-4 py-3" style="color: #65B994;">Yes</td> <td class="px-4 py-3" style="color: #65B994;">Yes</td> <td class="px-4 py-3 font-bold">100%</td> </tr>
+                                    <tr class="border-b bg-gray-50"> <th scope="row" class="px-4 py-3 text-left">2</th> <td class="px-4 py-3" style="color: #65B994;">Yes</td> <td class="px-4 py-3" style="color: #9B1915;">No</td> <td class="px-4 py-3 font-bold">0%</td> </tr>
+                                    <tr class="border-b"> <th scope="row" class="px-4 py-3 text-left">3</th> <td class="px-4 py-3" style="color: #9B1915;">No</td> <td class="px-4 py-3" style="color: #65B994;">Yes</td> <td class="px-4 py-3 font-bold">0%</td> </tr>
+                                    <tr class="bg-gray-50"> <th scope="row" class="px-4 py-3 text-left">4</th> <td class="px-4 py-3" style="color: #9B1915;">No</td> <td class="px-4 py-3" style="color: #9B1915;">No</td> <td class="px-4 py-3 font-bold">0%</td> </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Influencers Section -->
+            <section class="material-card md:col-span-2 lg:col-span-4">
+                <h2 class="text-3xl font-bold text-black mb-4 text-center uppercase">How to Influence Your Score</h2>
+                <p class="text-center text-gray-700 mb-8 max-w-4xl mx-auto font-normal">The OTIF score is directly in the hands of the purchasing specialist. Adhering to <span class="bg-[#9B1915] text-white px-2 rounded font-bold">two simple rules</span> is the key to achieving a high score and driving operational efficiency.</p>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-100 p-6 rounded-lg border-l-4 border-[#65B994]">
+                        <h3 class="text-black text-2xl mb-4 flex items-center font-bold"><span class="text-2xl mr-3">✅</span> What Helps Your Score</h3>
+                        <ul class="list-inside list-disc space-y-2 text-gray-800 font-normal">
+                            <li><strong>Act Fast:</strong> Process all new order lines from the planning system within 24 hours.</li>
+                            <li><strong>Be Precise:</strong> Order the exact quantity that the system has released. Do not make changes.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-6 rounded-lg border-l-4 border-[#9B1915]">
+                         <h3 class="text-black text-2xl mb-4 flex items-center font-bold"><span class="text-2xl mr-3">❌</span> What Hurts Your Score</h3>
+                        <ul class="list-inside list-disc space-y-2 text-gray-800 font-normal">
+                            <li><strong class="text-black">Delaying Orders:</strong> Letting an order sit for more than 24 hours before processing it.</li>
+                            <li><strong class="text-black">Changing Quantities:</strong> Adjusting the order quantity up or down for any reason.</li>
+                            <li><strong class="text-black">Manual Orders:</strong> Adding order lines manually that were not released by the planning system.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Exclusions and Why It Matters Sections -->
+            <section class="md:col-span-2 lg:col-span-4 grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <!-- Exclusions Card -->
+                <div class="material-card">
+                     <h2 class="text-3xl font-bold text-black mb-6 text-center uppercase">Important Exclusions</h2>
+                     <p class="text-center text-gray-700 mb-8 max-w-4xl mx-auto font-normal">Certain order types are explicitly excluded from the On-Time-In-Full Ordering calculation for accurate performance measurement.</p>
+                     <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-200 text-black uppercase">
                                 <tr>
-                                    <th scope="col" class="px-4 py-3">Line</th>
-                                    <th scope="col" class="px-4 py-3">On-Time?</th>
-                                    <th scope="col" class="px-4 py-3">In-Full?</th>
-                                    <th scope="col" class="px-4 py-3">Score</th>
+                                    <th class="p-4">Order Type</th>
+                                    <th class="p-4">Influence on OTIF Score</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-4 py-3 text-black-main">1</th>
-                                    <td class="px-4 py-3 text-turquoise-expressive">Yes</td>
-                                    <td class="px-4 py-3 text-turquoise-expressive">Yes</td>
-                                    <td class="px-4 py-3 text-black-main">100%</td>
-                                </tr>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-4 py-3 text-black-main">2</th>
-                                    <td class="px-4 py-3 text-turquoise-expressive">Yes</td>
-                                    <td class="px-4 py-3 text-red-main">No</td>
-                                    <td class="px-4 py-3 text-black-main">0%</td>
-                                </tr>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-4 py-3 text-black-main">3</th>
-                                    <td class="px-4 py-3 text-red-main">No</td>
-                                    <td class="px-4 py-3 text-turquoise-expressive">Yes</td>
-                                    <td class="px-4 py-3 text-black-main">0%</td>
-                                </tr>
-                                <tr class="bg-white">
-                                    <th scope="row" class="px-4 py-3 text-black-main">4</th>
-                                    <td class="px-4 py-3 text-red-main">No</td>
-                                    <td class="px-4 py-3 text-red-main">No</td>
-                                    <td class="px-4 py-3 text-black-main">0%</td>
-                                </tr>
+                            <tbody class="divide-y font-normal">
+                                <tr class="bg-white"> <td class="p-4">Standard Planned Orders</td> <td class="p-4">Directly influences (positively or negatively)</td> </tr>
+                                <tr class="bg-gray-50"> <td class="p-4">Manually Added Orders (not "Specials")</td> <td class="p-4">Negatively influences (typically 0% for line)</td> </tr>
+                                <tr class="bg-white"> <td class="p-4">Special Orders (e.g., promotions, "SPEC%")</td> <td class="p-4">No influence (excluded)</td> </tr>
+                                <tr class="bg-gray-50"> <td class="p-4">Direct Shipments</td> <td class="p-4">No influence (excluded)</td> </tr>
+                                <tr class="bg-white"> <td class="p-4">Transit Orders</td> <td class="p-4">No influence (excluded); labeled in OMS as ST lines.</td> </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <section id="influencers" class="mb-16">
-             <h2 class="text-3xl text-black-main mb-4 text-center">How to Influence Your Score</h2>
-             <p class="text-lg text-black-main mb-10 text-center max-w-3xl mx-auto">The OTIF score is directly in the hands of the purchasing specialist. Adhering to <span class="bg-red-main text-white-main px-2 rounded">two simple rules</span> is the key to achieving a high score and driving operational efficiency.</p>
-            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-turquoise-expressive p-6 rounded-lg border-l-4 border-turquoise-expressive">
-                    <h3 class="text-black-main text-2xl mb-4 flex items-center"><span class="text-2xl mr-3">✅</span> What Helps Your Score</h3>
-                    <ul class="list-inside list-disc space-y-2 text-black-main">
-                        <li><strong>Act Fast:</strong> Process all new order lines from the planning system within 24 hours.</li>
-                        <li><strong>Be Precise:</strong> Order the exact quantity that the system has released. Do not make changes.</li>
-                    </ul>
+                <!-- Why it Matters Card -->
+                <div class="material-card">
+                    <h2 class="text-3xl font-bold text-black mb-6 text-center uppercase">Why OTIF is Crucial</h2>
+                    <p class="text-center text-gray-700 mb-8 max-w-4xl mx-auto font-normal">A high OTIF score isn't just a number—it's a reflection of a healthy, efficient, and reliable supply chain. Improving this single metric creates positive ripple effects across the entire operation.</p>
+                    <div class="grid grid-cols-2 gap-6 text-center">
+                        <div class="p-4 rounded-lg bg-gray-50 shadow-sm"> <div class="text-4xl mb-2">🚀</div> <h4 class="font-bold text-black text-lg">Improves Efficiency</h4> <p class="font-normal text-gray-700 mt-1 text-sm">Ensures a smooth, predictable flow from planning to purchasing.</p> </div>
+                        <div class="p-4 rounded-lg bg-gray-50 shadow-sm"> <div class="text-4xl mb-2">📦</div> <h4 class="font-bold text-black text-lg">Optimizes Stock</h4> <p class="font-normal text-gray-700 mt-1 text-sm">Prevents both costly stockouts and wasteful overstocking.</p> </div>
+                        <div class="p-4 rounded-lg bg-gray-50 shadow-sm"> <div class="text-4xl mb-2">⏳</div> <h4 class="font-bold text-black text-lg">Reduces Delays</h4> <p class="font-normal text-gray-700 mt-1 text-sm">Timely ordering at the start prevents delays down the line.</p> </div>
+                        <div class="p-4 rounded-lg bg-gray-50 shadow-sm"> <div class="text-4xl mb-2">🤝</div> <h4 class="font-bold text-black text-lg">Builds Trust</h4> <p class="font-normal text-gray-700 mt-1 text-sm">Strengthens relationships with suppliers through reliability.</p> </div>
+                    </div>
                 </div>
-                <div class="bg-red-main p-6 rounded-lg border-l-4 border-red-main">
-                     <h3 class="text-white-main text-2xl mb-4 flex items-center"><span class="text-2xl mr-3">❌</span> What Hurts Your Score</h3>
-                    <ul class="list-inside list-disc space-y-2 text-white-main">
-                        <li><strong class="text-yellow-expressive">Delaying Orders:</strong> Letting an order sit for more than 24 hours before processing it.</li>
-                        <li><strong class="text-yellow-expressive">Changing Quantities:</strong> Adjusting the order quantity up or down for any reason.</li>
-                        <li><strong class="text-yellow-expressive">Manual Orders:</strong> Adding order lines manually that were not released by the planning system.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+            </section>
+        </main>
 
-        <section id="exceptions" class="mb-16">
-            <h2 class="text-3xl text-black-main mb-8 text-center">Important Exclusions</h2>
-            <p class="text-lg text-black-main mb-10 text-center max-w-3xl mx-auto">
-                Certain order types are explicitly excluded from the On-Time-In-Full Ordering calculation for accurate performance measurement.
-            </p>
-            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-black-main text-white-main">
-                        <tr>
-                            <th class="p-4">Order Type</th>
-                            <th class="p-4">Influence on OTIF Score</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y">
-                        <tr class="bg-white">
-                            <td class="p-4 text-black-main">Standard Planned Orders</td>
-                            <td class="p-4 text-black-main">Directly influences (positively or negatively)</td>
-                        </tr>
-                        <tr class="bg-white">
-                            <td class="p-4 text-black-main">Manually Added Orders (not "Specials")</td>
-                            <td class="p-4 text-black-main">Negatively influences (typically 0% for line)</td>
-                        </tr>
-                        <tr class="bg-white">
-                            <td class="p-4 text-black-main">Special Orders (e.g., promotions, "SPEC%")</td>
-                            <td class="p-4 text-black-main">No influence (excluded)</td>
-                        </tr>
-                        <tr class="bg-white">
-                            <td class="p-4 text-black-main">Direct Shipments</td>
-                            <td class="p-4 text-black-main">No influence (excluded)</td>
-                        </tr>
-                        <tr class="bg-white">
-                            <td class="p-4 text-black-main">Transit Orders</td>
-                            <td class="p-4 text-black-main">No influence (excluded); labeled in OMS as ST lines.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        
-        <section id="why-it-matters" class="mb-16">
-             <h2 class="text-3xl text-black-main mb-8 text-center">Why OTIF is Crucial for Our Business</h2>
-             <p class="text-lg text-black-main mb-10 text-center max-w-3xl mx-auto">A high OTIF score isn't just a number—it's a reflection of a healthy, efficient, and reliable supply chain. Improving this single metric creates positive ripple effects across the entire operation.</p>
-             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-                 <div class="kpi-card text-center">
-                     <div class="text-6xl mb-4 text-red-main">🚀</div>
-                     <h3 class="text-xl text-black-main mb-2">Improves Efficiency</h3>
-                     <p class="text-black-main">Ensures a smooth, predictable flow from planning to purchasing.</p>
-                 </div>
-                 <div class="kpi-card text-center">
-                     <div class="text-6xl mb-4 text-yellow-expressive">📦</div>
-                     <h3 class="text-xl text-black-main mb-2">Optimizes Stock</h3>
-                     <p class="text-black-main">Prevents both costly stockouts and wasteful overstocking.</p>
-                 </div>
-                 <div class="kpi-card text-center">
-                     <div class="text-6xl mb-4 text-aqua-expressive">⏳</div>
-                     <h3 class="text-xl text-black-main mb-2">Reduces Delays</h3>
-                     <p class="text-black-main">Timely ordering at the start prevents delays down the line.</p>
-                 </div>
-                 <div class="kpi-card text-center">
-                     <div class="text-6xl mb-4 text-turquoise-expressive">🤝</div>
-                     <h3 class="text-xl text-black-main mb-2">Builds Trust</h3>
-                     <p class="text-black-main">Strengthens relationships with suppliers through reliability.</p>
-                 </div>
-             </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-black-main text-white-main text-center p-6">
-        <p>&copy; 2024 Supply Chain Analytics. All Rights Reserved.</p>
-        <p class="text-sm opacity-75 mt-2">This infographic is for internal educational purposes.</p>
-    </footer>
+        <!-- Footer updated to match OFA style -->
+        <footer class="text-center mt-12 p-8 rounded-lg" style="background-color: #000000; color: #FFFFFF;">
+            <p>This infographic provides a visual summary of the On-Time-In-Full (OTIF) Ordering metric.</p>
+            <p>&copy; 2025 Kramp. All rights reserved.</p>
+        </footer>
+    </div>
 
     <script>
-        function wrapLabels(label) {
-            const maxLength = 16;
-            if (typeof label === 'string' && label.length > maxLength) {
-                const words = label.split(' ');
-                const lines = [];
-                let currentLine = '';
-                words.forEach(word => {
-                    if ((currentLine + word).length > maxLength) {
-                        lines.push(currentLine.trim());
-                        currentLine = '';
-                    }
-                    currentLine += word + ' ';
-                });
-                lines.push(currentLine.trim());
-                return lines;
-            }
-            return label;
-        }
+        // Chart.js defaults from reference file
+        Chart.defaults.font.family = "'Barlow Condensed', sans-serif";
+        Chart.defaults.font.weight = '400';
+        Chart.defaults.color = '#000000';
 
+        // Chart.js implementation from OTIF file
         const otifDonutCtx = document.getElementById('otifDonutChart').getContext('2d');
         new Chart(otifDonutCtx, {
             type: 'doughnut',
@@ -329,41 +238,33 @@
                         '#65B994', /* Turquoise for successful */
                         '#9B1915'  /* Red for failed */
                     ],
-                    borderColor: [
-                        '#000000', /* Black border for successful segment */
-                        '#FFFFFF'  /* White border for failed segment */
-                    ],
-                    borderWidth: 2
+                    borderColor: '#ffffff',
+                    borderWidth: 4,
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                cutout: '60%',
                 plugins: {
                     legend: {
-                        position: 'top',
-                        labels: {
-                            color: '#000000' /* Black color for legend text */
-                        }
+                       display: true,
+                       position: 'bottom',
+                       labels: {
+                           font: {
+                               weight: '700' // Bold
+                           }
+                       }
                     },
                     tooltip: {
                         callbacks: {
                             title: function(tooltipItems) {
-                                const item = tooltipItems[0];
-                                let label = item.chart.data.labels[item.dataIndex];
-                                if (Array.isArray(label)) {
-                                    return label.join(' ');
-                                } else {
-                                    return label;
-                                }
+                                return tooltipItems[0].label;
                             }
                         }
-                    },
-                     title: {
-                        display: false
                     }
-                },
-                cutout: '60%'
+                }
             }
         });
     </script>
